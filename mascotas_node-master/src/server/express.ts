@@ -8,7 +8,6 @@ import * as helmet from "helmet";
 import * as morgan from "morgan";
 import * as passport from "passport";
 import * as path from "path";
-import * as token from "../token/passport";
 import * as error from "../server/error";
 import { Config } from "./environment";
 require("express-async-errors");
@@ -55,12 +54,10 @@ export function init(appConfig: Config): express.Express {
   );
   app.get("/", (req, res, next) => { res.redirect("index.html"); });
 
-  // Iniciamos passport
-  token.init();
 
   // Iniciamos las rutas del directorio
   // mas sobre rutas http://expressjs.com/es/guide/routing.html
-  routes.initModules(app);
+  routes.init(app);
 
   // Para el manejo de errores, para que los loguee en la consola
   app.use(error.handle);

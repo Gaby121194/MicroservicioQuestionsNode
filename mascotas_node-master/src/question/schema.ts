@@ -2,33 +2,30 @@ import * as mongoose from "mongoose";
 import { strict } from "assert";
 
 export interface IQuestion extends mongoose.Document {
-  questionId: string;
+  articleId: string;
   userEmmiter: string;
   userReceptor: string;
-  nameEmmiter: string;
   nameReceptor: string;
   question: string;
   response: string;
   dateresponse: Date;
   created: Date;
-  updated: Date;
-  deleted: Date;
   enabled: Boolean;
   addQuestion: Function;
   addResponse: Function
 }
 
-export interface IMessage extends mongoose.Document {
-    messageId?: string;
-    text: string;
-    created?: Date;
-    sender: string,
-    nameSender?: string
 
-  }
 
   export let QuestionSchema = new mongoose.Schema({
     
+    articleId: {
+      type: String,
+      default: "",
+      trim: true,
+      required: "El id del articulo por el que se hace la pregunta"
+
+    },
     userEmmiter: {
         type: String,
         default: "",
@@ -40,7 +37,11 @@ export interface IMessage extends mongoose.Document {
         type: String,
         default: "",
         trim: true,
-        required: "El userId del user que recibe la pregunta",
+      },
+      nameReceptor: {
+        type: String,
+        default: "",
+        trim: true,
       },
 
     question: {
@@ -67,14 +68,6 @@ export interface IMessage extends mongoose.Document {
       type: Date,
       default: Date.now()
     },
-    updated: {
-      type: Date,
-      default: Date.now()
-    },
-    deleted: {
-      type: Date,
-      default: null
-    },
     enabled: {
       type: Boolean,
       default: true
@@ -88,8 +81,9 @@ export interface IMessage extends mongoose.Document {
    return;
  };
 
- QuestionSchema.methods.addResponse = function (response: String) {
+ QuestionSchema.methods.addResponse = function (response: String, name: String) {
   this.response = response;
+  this.nameReceptor= name;
   this.dateresponse= Date.now();
   return;
 };

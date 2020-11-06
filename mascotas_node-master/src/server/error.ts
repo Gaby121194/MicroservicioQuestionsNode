@@ -68,7 +68,7 @@ export function newError(code: number, err: string): ValidationErrorMessage {
  *     }
  *
  */
-export function handle(err: any, req: express.Request, res: express.Response, next: NextFunction) {
+export function handle(err: any, res: express.Response) {
   if (err instanceof ValidationErrorMessage
     || err.code || err.messages) {
     // ValidationErrorMessage

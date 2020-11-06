@@ -18,6 +18,8 @@ export function getConfig(environment: any): Config {
       port: process.env.SERVER_PORT || "3000",
       logLevel: process.env.LOG_LEVEL || "debug",
       mongoDb: process.env.MONGODB || "mongodb://localhost/mascotas_db",
+      securityServer: process.env.AUTH_SERVICE_URL || "http://localhost:3001",
+      rabbitUrl: process.env.RABBIT_URL || "amqp://localhost",
       jwtSecret: process.env.JWT_SECRET || "+b59WQF+kUDr0TGxevzpRV3ixMvyIQuD1O",
       passwordSalt: process.env.PASSWORD_SALT || "DP3whK1fL7kKvhWm6pZomM/y8tZ92mkEBtj29A4M+b8",
       redisHost: process.env.REDIS_HOST || "127.0.0.1",
@@ -35,4 +37,6 @@ export interface Config {
   jwtSecret: string;
   redisHost: string;
   redisPort: number;
+  securityServer: string;
+  rabbitUrl: string;
 }
