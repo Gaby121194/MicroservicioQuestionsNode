@@ -48,7 +48,9 @@ export function init(app: Express) {
   async function create(req: IUserSessionRequest, res: express.Response) {
     const result = await service.create(req.user.user.id, req.body);
     res.json({
-      id: result.id
+      id: result.id,
+      articleId: result.articleId,
+      message: result.question,
     });
   }
 
@@ -57,6 +59,7 @@ export function init(app: Express) {
     res.json(result.map(u => {
       return {
         id: u._id,
+        articleId: u.articleId,
         message: u.question,
         response: u.response
       };
@@ -68,6 +71,7 @@ export function init(app: Express) {
     res.json(result.map(u => {
       return {
         id: u._id,
+        articleId: u.articleId,
         message: u.question,
         response: u.response
       };
@@ -78,6 +82,8 @@ export function init(app: Express) {
     const result = await service.responseQuestion(req.user.user, req.params.idQuestion, req.body);
     res.json({
         id: result.id,
+        articleId: result.articleId,
+        message: result.question,
         response: result.response
       }
       );

@@ -7,6 +7,7 @@ import { use } from "passport";
 import { IUser } from "../token";
 import { sendQuestion, sendResponse } from "../rabbit/questionService";
 import { rejects } from "assert";
+import { constants } from "fs";
 const mongoose = require("mongoose");
 
 interface CreateQuestion{
@@ -71,35 +72,29 @@ interface ResponseQuestion {
 
 export async function responseQuestion(user: IUser, questionId: string, body: ResponseQuestion): Promise<IQuestion> {
   try {
-    if (user.permissions.indexOf("admin") >= 0){
-      let current: IQuestion;
-      if (questionId) {
-        current = await Question.findById(questionId);
-        if (!current) {
-          throw error.ERROR_NOT_FOUND;
-        }
-        if (current.response != ""){
-          return Promise.reject("Ya esta contestada esta pregunta");
-        } 
-        
-        return new Promise((resolve, reject) => {
-       
-          current.userReceptor = user.id;
-          current.addResponse(body.text, user.name);
-          current.save().then((res)=> {
-            sendResponse(res._id, res.question);
-            resolve(res)
-          },
-          ()=> {reject(error)})
-        
-  })
+    if (user.permissions.indexOf('admin') > 0){
+     const current = await Question.findById(questionId);
+      if (!current) {
+        throw error.ERROR_NOT_FOUND;
+      }
+      if (current.response != ""){
+        return Promise.reject("Ya esta contestada esta pregunta");
+      } 
       
-
-    }
-    else{
+      return new Promise((resolve, reject) => {
+     
+        current.userReceptor = user.id;
+        current.addResponse(body.text, user.name);
+        current.save().then((res)=> {
+          sendResponse(res._id, res.question);
+          resolve(res)
+        },
+        ()=> {reject(error)})
+      
+       })
+    }else{
       return Promise.reject("No tiene permiso para contestar esta pregunta");
     }
-  }
   } catch (err) {
     return Promise.reject(err);
   }
@@ -120,4 +115,5 @@ export async function findById(userId: string, questionId: string): Promise<IQue
     return Promise.reject(err);
   }
 }
+
 
