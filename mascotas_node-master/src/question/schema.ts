@@ -74,6 +74,10 @@ export interface IQuestion extends mongoose.Document {
     }
   }, { collection: "question" });
 
+  
+/**
+ * Crea una pregunta para un articulo
+ */
 
  QuestionSchema.methods.addQuestion = function (question: String) {
    this.question = question;
@@ -81,6 +85,10 @@ export interface IQuestion extends mongoose.Document {
    return;
  };
 
+ 
+/**
+ * Responde una pregunta realizada para un articulo
+ */
  QuestionSchema.methods.addResponse = function (response: String, name: String) {
   this.response = response;
   this.nameReceptor= name;

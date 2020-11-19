@@ -24,7 +24,7 @@ export async function create(userId: string, body: CreateQuestion): Promise<IQue
             result.articleId= body.articleId
             result.addQuestion(body.text);
             result.save().then((res)=> {
-              sendQuestion(res._id, res.question);
+              sendQuestion(res);
               resolve(res)
             },
             ()=> {reject(error)})
@@ -86,7 +86,7 @@ export async function responseQuestion(user: IUser, questionId: string, body: Re
         current.userReceptor = user.id;
         current.addResponse(body.text, user.name);
         current.save().then((res)=> {
-          sendResponse(res._id, res.question);
+          sendResponse(res);
           resolve(res)
         },
         ()=> {reject(error)})
